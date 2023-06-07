@@ -56,7 +56,7 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private shouldAppendToken(url: string) {
-    return !this.hasHttpScheme(url) || this.includeBaseUrl(url);
+    return this.hasHttpScheme(url) || this.includeBaseUrl(url);
   }
 
   private includeBaseUrl(url: string) {

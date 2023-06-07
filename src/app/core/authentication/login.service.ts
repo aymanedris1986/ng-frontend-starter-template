@@ -11,7 +11,7 @@ export class LoginService {
   constructor(protected http: HttpClient) {}
 
   login(username: string, password: string, rememberMe = false) {
-    return this.http.post<Token>('/auth/login', { username, password, rememberMe });
+    return this.http.post<Token>('http://localhost:8585/v1/api'+'/auth/login', { username, password, rememberMe });
   }
 
   refresh(params: Record<string, any>) {
@@ -23,7 +23,7 @@ export class LoginService {
   }
 
   me() {
-    return this.http.get<User>('/me');
+    return this.http.get<User>('http://localhost:8585/v1/api'+'/id/me');
   }
 
   menu() {

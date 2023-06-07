@@ -130,24 +130,24 @@ export class InMemDataService implements InMemoryDbService {
         switchMap(response => reqInfo.utils.createResponse$(() => response))
       );
     }
-
-    if (is(reqInfo, 'me')) {
-      const user = jwt.getUser(reqInfo.req as HttpRequest<any>);
-      const result = user
-        ? { status: STATUS.OK, body: user }
-        : { status: STATUS.UNAUTHORIZED, body: {} };
-      const response = Object.assign({ headers, url }, result);
-
-      return reqInfo.utils.createResponse$(() => response);
-    }
+    //
+    // if (is(reqInfo, 'me')) {
+    //   const user = jwt.getUser(reqInfo.req as HttpRequest<any>);
+    //   const result = user
+    //     ? { status: STATUS.OK, body: user }
+    //     : { status: STATUS.UNAUTHORIZED, body: {} };
+    //   const response = Object.assign({ headers, url }, result);
+    //
+    //   return reqInfo.utils.createResponse$(() => response);
+    // }
 
     return;
   }
 
   post(reqInfo: RequestInfo) {
-    if (is(reqInfo, 'auth/login')) {
-      return this.login(reqInfo);
-    }
+    // if (is(reqInfo, 'auth/login')) {
+    //   return this.login(reqInfo);
+    // }
 
     if (is(reqInfo, 'auth/refresh')) {
       return this.refresh(reqInfo);

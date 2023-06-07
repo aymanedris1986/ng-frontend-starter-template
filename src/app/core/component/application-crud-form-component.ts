@@ -5,35 +5,29 @@ import {NavigationExtras} from '@angular/router';
 import {CrudService} from '@core/service/crud-service';
 import {AppModel} from '@core/model/app-model';
 import {ApiResponse} from '@core/model/api-response';
-import {ApplicationComponent} from '@core/component/application-component';
+import {ApplicationInputFormComponent} from '@core/component/application-input-form-component';
 
 @Component({
   selector: 'application-crud-component',
   template: ''
 })
-export abstract class ApplicationCrudComponent<I> extends ApplicationComponent implements OnInit {
+export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFormComponent implements OnInit {
   @Input() id: I;
   @Input()showToolBar:boolean;
   @Input()backButtonNavigation:string;
   @Input()backButtonExtras?: NavigationExtras;
-  fg: FormGroup;
-  fb: FormBuilder;
   crudService: CrudService<AppModel<I>, I>;
   model: AppModel<I>;
   newRecord: boolean;
 
   protected constructor() {
     super();
-    this.fb = this.getFormBuilder();
+    this.crudService = this.getCrudService();
     this.showToolBar = true;
-    this.fg = this.getFormGroup();
+    this.newRecord = true;
   }
 
   ngOnInit(): void {
-
-    this.crudService = this.getCrudService();
-    this.newRecord = true;
-    this.auth.user().subscribe(user => (this.user = user));
     if (this.id) {
       this.newRecord = false;
       this.beforeNgOnInitQueryModel();
@@ -159,9 +153,7 @@ export abstract class ApplicationCrudComponent<I> extends ApplicationComponent i
     this.fg.controls[formControlId].enable();
   }
   //override to put your custom form builder
-  protected getFormBuilder() {
-    return inject(FormBuilder);
-  }
+
 
   //override method for any before update logic
   protected onValueChangeBeforeUpdateModel(newData: any) {
@@ -179,7 +171,7 @@ export abstract class ApplicationCrudComponent<I> extends ApplicationComponent i
 
   abstract getCrudService(): CrudService<AppModel<I>, I>;
 
-  abstract getFormGroup(): FormGroup;
+
 
 
   //override method for any before insert logic

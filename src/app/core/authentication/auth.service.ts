@@ -69,11 +69,9 @@ export class AuthService {
     if (!this.check()) {
       return of({}).pipe(tap(user => this.user$.next(user)));
     }
-
     if (!isEmptyObject(this.user$.getValue())) {
       return of(this.user$.getValue());
     }
-
     return this.loginService.me().pipe(tap(user => this.user$.next(user)));
   }
 }
