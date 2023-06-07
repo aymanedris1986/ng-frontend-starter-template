@@ -160,6 +160,9 @@
     },
     "@angular-eslint/schematics:library": {
       "setParserOptionsProject": true
+    },
+    "@schematics/angular:component": {
+      "spec": false
     }
   }
 }

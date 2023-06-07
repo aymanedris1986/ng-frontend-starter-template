@@ -19,12 +19,11 @@ import { SettingsService } from '@core';
 export class TranslateComponent {
   langs = {
     'en-US': 'English',
-    'zh-CN': '中文简体',
-    'zh-TW': '中文繁体',
+    'ar-EG': 'عربى'
   };
 
   constructor(private translate: TranslateService, private settings: SettingsService) {
-    translate.addLangs(['en-US', 'zh-CN', 'zh-TW']);
+    translate.addLangs(['en-US', 'ar-EG']);
   }
 
   useLanguage(language: string) {
