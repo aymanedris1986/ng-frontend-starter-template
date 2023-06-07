@@ -1,0 +1,220 @@
+
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Component, inject, Input, OnInit} from '@angular/core';
+import {NavigationExtras} from '@angular/router';
+import {CrudService} from '@core/service/crud-service';
+import {AppModel} from '@core/model/app-model';
+import {ApiResponse} from '@core/model/api-response';
+import {ApplicationComponent} from '@core/component/application-component';
+
+@Component({
+  selector: 'application-crud-component',
+  template: ''
+})
+export abstract class ApplicationCrudComponent<I> extends ApplicationComponent implements OnInit {
+  @Input() id: I;
+  @Input()showToolBar:boolean;
+  @Input()backButtonNavigation:string;
+  @Input()backButtonExtras?: NavigationExtras;
+  fg: FormGroup;
+  fb: FormBuilder;
+  crudService: CrudService<AppModel<I>, I>;
+  model: AppModel<I>;
+  newRecord: boolean;
+
+  protected constructor() {
+    super();
+    this.fb = this.getFormBuilder();
+    this.showToolBar = true;
+    this.fg = this.getFormGroup();
+  }
+
+  ngOnInit(): void {
+
+    this.crudService = this.getCrudService();
+    this.newRecord = true;
+    this.auth.user().subscribe(user => (this.user = user));
+    if (this.id) {
+      this.newRecord = false;
+      this.beforeNgOnInitQueryModel();
+      this.crudService.findById(this.id).subscribe(
+        data => {
+          this.model = data.data;
+          this.fg.patchValue(this.model);
+          this.afterNgOnInitQueryModel();
+          this.afterModelInitiation();
+        },
+        error => {
+          this.handleUnexpectedError(error);
+        }
+      );
+    }else{
+      this.model = this.createNewModelObject();
+      this.afterModelInitiation();
+    }
+    this.fg.valueChanges.subscribe(data => {
+      if (this.fg.valid) {
+        this.onValueChangeBeforeUpdateModel(data);
+        const oldModel:AppModel<I> = this.model;
+        this.model = Object.assign({}, this.model, data);
+        this.onValueChangeAfterUpdateModel(oldModel,data);
+      }
+    });
+  }
+
+
+
+  submit() {
+    if (this.fg.valid) {
+      if (this.newRecord) {
+        this.beforeInsert();
+        this.setCreated();
+        this.setUpdated();
+        this.crudService.insert(this.model).subscribe(
+          data => {
+            this.afterInsertSuccess(data.data);
+            this.model = data.data;
+            this.handleSubmitSuccess(data);
+            this.newRecord = false;
+          },
+          error => {
+            this.afterInsertError(error);
+            this.handleSubmitError(error);
+          }
+        );
+      } else {
+        this.beforeUpdate();
+        this.setUpdated();
+        this.crudService.update(this.model).subscribe(
+          data => {
+            this.afterUpdateSuccess(data.data);
+            this.model = data.data;
+            this.handleSubmitSuccess(data);
+          },
+          error => {
+            this.afterUpdateError(error);
+            this.handleSubmitError(error);
+          }
+        );
+      }
+
+    }
+  }
+
+
+  private handleSubmitSuccess(data: ApiResponse) {
+    this.model = data.data;
+    this.toastService.info('Saved successfully');
+  }
+
+  private handleSubmitError(error: any) {
+    if (error.error && error.error.data && error.error.data.validationErrors) {
+      const validationErrors = error.error.data.validationErrors;
+      for (const key in validationErrors) {
+        const value = validationErrors[key];
+        this.toastService.error(value);
+      }
+    } else {
+      this.handleUnexpectedError(error);
+    }
+  }
+
+
+  private handleUnexpectedError(error: any) {
+    this.toastService.error('Unexpected error');
+    this.toastService.error(JSON.stringify(error));
+  }
+
+  private setUpdated() {
+    this.model.updatedBy = this.user.name!;
+    this.model.updatedAt = new Date();
+  }
+
+  private setCreated() {
+    this.model.createdBy = this.user.name!;
+    this.model.createdAt = new Date();
+  }
+
+  back(): void {
+    this.router.navigate([this.backButtonNavigation],this.backButtonExtras);
+  }
+
+  public setFormControlValue(formControlId:string,value:any){
+    this.fg.controls[formControlId].setValue(value);
+  }
+
+  public getFormControlValue(formControlId:string):any{
+    return this.fg.controls[formControlId].getRawValue();
+  }
+
+  public patchFormControlValue(formValues:any){
+    this.fg.patchValue(formValues);
+  }
+
+  public disableFormControl(formControlId:string){
+    this.fg.controls[formControlId].disable();
+  }
+
+  public enableFormControl(formControlId:string){
+    this.fg.controls[formControlId].enable();
+  }
+  //override to put your custom form builder
+  protected getFormBuilder() {
+    return inject(FormBuilder);
+  }
+
+  //override method for any before update logic
+  protected onValueChangeBeforeUpdateModel(newData: any) {
+  }
+  //override method for any after update logic
+  protected onValueChangeAfterUpdateModel(oldModel:AppModel<I>,newData: any) {
+  }
+
+  protected addFormControlValueChangeListener(controlName:string,listener: (value: any) => void){
+    this.fg.controls[controlName].valueChanges.subscribe(listener);
+  }
+
+
+  abstract createNewModelObject():AppModel<I>;
+
+  abstract getCrudService(): CrudService<AppModel<I>, I>;
+
+  abstract getFormGroup(): FormGroup;
+
+
+  //override method for any before insert logic
+  protected beforeInsert() {
+  }
+  //override method for any after insert logic
+  protected afterInsertSuccess(newData: any) {
+  }
+
+  //override method for any after insert error logic
+  protected afterInsertError(error:any) {
+  }
+
+  //override method for any before update logic
+  protected beforeUpdate() {
+  }
+  //override method for any after update logic
+  protected afterUpdateSuccess(newData: any) {
+  }
+
+  //override method for any after update error logic
+  protected afterUpdateError(error:any) {
+  }
+
+
+  protected beforeNgOnInitQueryModel() {
+
+  }
+
+  protected afterNgOnInitQueryModel() {
+
+  }
+
+
+  protected afterModelInitiation() {
+
+  }
+}
