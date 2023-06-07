@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {environment} from '@env/environment';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {LovRecord} from '@shared/model/common/lov-record';
+import {LovRecord} from '@core/model/lov-record';
 
 @Injectable({
   providedIn: 'root'

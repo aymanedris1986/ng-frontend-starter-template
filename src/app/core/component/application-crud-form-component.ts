@@ -22,12 +22,12 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
 
   protected constructor() {
     super();
-    this.crudService = this.getCrudService();
     this.showToolBar = true;
     this.newRecord = true;
   }
 
   ngOnInit(): void {
+    this.crudService = this.getCrudService();
     if (this.id) {
       this.newRecord = false;
       this.beforeNgOnInitQueryModel();
