@@ -8,6 +8,7 @@ import {ApiResponse} from '@core/model/api-response';
 import {ApplicationInputFormComponent} from '@core/component/application-input-form-component';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {AppModel} from '@core/model/app-model';
+import {catchError} from 'rxjs/operators';
 
 @Component({
   selector: 'application-crud-component',
@@ -52,15 +53,17 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
   private findById() {
     this.setOldRecord();
     this.beforeQueryModel();
-    this.service().findById(this.id).subscribe(
+    this.service().findById(this.id).pipe(
+      catchError(error => {
+        this.handleUnexpectedError(error);
+        throw error;
+      })
+    ).subscribe(
       data => {
         this.setModel(data.data);
         this.fg.patchValue(this.model);
         this.afterQueryModel();
         this.afterModelInitiation();
-      },
-      error => {
-        this.handleUnexpectedError(error);
       }
     );
   }
@@ -75,37 +78,48 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
   submit() {
     if (this.fg.valid) {
       if (this.newRecord) {
-        this.beforeInsert();
-        this.service().insert(this.crudModel()).subscribe(
-          data => {
-            this.afterInsertSuccess(data.data);
-            this.setModel(data.data);
-            this.handleSubmitSuccess(data);
-            this.setOldRecord();
-          },
-          error => {
-            this.afterInsertError(error);
-            this.handleSubmitError(error);
-          }
-        );
+        this.insert();
       } else {
-        this.beforeUpdate();
-        this.service().update(this.crudModel()).subscribe(
-          data => {
-            this.afterUpdateSuccess(data.data);
-            this.setModel(data.data);
-            this.handleSubmitSuccess(data);
-          },
-          error => {
-            this.afterUpdateError(error);
-            this.handleSubmitError(error);
-          }
-        );
+        this.update();
       }
-
     }
   }
 
+
+  private update() {
+    this.beforeUpdate();
+    this.service().update(this.crudModel()).pipe(
+      catchError(error => {
+        this.afterUpdateError(error);
+        this.handleSubmitError(error);
+        throw error;
+      })
+    ).subscribe(
+      data => {
+        this.afterUpdateSuccess(data.data);
+        this.setModel(data.data);
+        this.handleSubmitSuccess(data);
+      }
+    );
+  }
+
+  private insert() {
+    this.beforeInsert();
+    this.service().insert(this.crudModel()).pipe(
+      catchError(error => {
+        this.afterInsertError(error);
+        this.handleSubmitError(error);
+        throw error;
+      })
+    ).subscribe(
+      data => {
+        this.afterInsertSuccess(data.data);
+        this.setModel(data.data);
+        this.handleSubmitSuccess(data);
+        this.setOldRecord();
+      }
+    );
+  }
 
   private handleSubmitSuccess(data: ApiResponse) {
     this.toastService.info('Saved successfully');
@@ -134,16 +148,7 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
     this.router.navigate([this.backButtonNavigation],this.backButtonExtras);
   }
 
-
-
-
-
-
-
   abstract getCrudService(): CrudService<AppCrudModel<I>, I>;
-
-
-
 
   //override method for any before insert logic
   protected beforeInsert() {
