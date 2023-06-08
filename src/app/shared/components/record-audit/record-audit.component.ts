@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {AppModel} from '@core/model/app-model';
+import {AppCrudModel} from '@core/model/app-crud-model';
 
 @Component({
   selector: 'app-record-audit',
@@ -8,6 +8,6 @@ import {AppModel} from '@core/model/app-model';
 })
 export class RecordAuditComponent {
   @Input()
-  model:AppModel<any>;
+  model:AppCrudModel<any>;
 
 }

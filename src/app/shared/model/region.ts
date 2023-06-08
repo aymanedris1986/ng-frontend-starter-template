@@ -1,8 +1,7 @@
-import {AppModel} from '@core/model/app-model';
+import {AppCrudModel} from '@core/model/app-crud-model';
 
-export class Region extends AppModel<number>{
+export class Region extends AppCrudModel<number>{
   regionName:string;
-
   static fg :any  =       {
     regionName: [null]
   };

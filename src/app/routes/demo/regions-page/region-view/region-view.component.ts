@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ApplicationCrudFormComponent} from '@core/component/application-crud-form-component';
-import {AppModel} from '@core/model/app-model';
+import {AppCrudModel} from '@core/model/app-crud-model';
 import {CrudService} from '@core/service/crud-service';
 import {FormGroup} from '@angular/forms';
 import {RegionService} from '@shared/services/application/region.service';
@@ -18,17 +18,19 @@ export class DemoRegionsPageRegionViewComponent extends ApplicationCrudFormCompo
   }
 
 
-  createNewModelObject(): AppModel<number> {
+  createNewModelObject(): AppCrudModel<number> {
     return new Region();
   }
 
-  getCrudService(): CrudService<AppModel<number>, number> {
+  getCrudService(): CrudService<AppCrudModel<number>, number> {
     return this.regionService;
   }
 
   getFormGroup(): FormGroup {
-    return this.fb.nonNullable.group(Region.fg);
+    return this.toFormGroup(Region.fg);
   }
+
+
 
   getLovNames(): string[] {
     return [];

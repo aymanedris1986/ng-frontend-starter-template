@@ -1,8 +1,8 @@
 
 import {Validators} from '@angular/forms';
-import {AppModel} from '@core/model/app-model';
+import {AppCrudModel} from '@core/model/app-crud-model';
 
-export class Lookup extends AppModel<string>{
+export class Lookup extends AppCrudModel<string>{
   name:string;
 
   static fg :any  =       {

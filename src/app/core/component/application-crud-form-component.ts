@@ -3,58 +3,67 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {Component, inject, Input, OnInit} from '@angular/core';
 import {NavigationExtras} from '@angular/router';
 import {CrudService} from '@core/service/crud-service';
-import {AppModel} from '@core/model/app-model';
+import {AppCrudModel} from '@core/model/app-crud-model';
 import {ApiResponse} from '@core/model/api-response';
 import {ApplicationInputFormComponent} from '@core/component/application-input-form-component';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {AppModel} from '@core/model/app-model';
 
 @Component({
   selector: 'application-crud-component',
   template: ''
 })
 export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFormComponent implements OnInit {
-  @Input() id: I;
+  private _id: I;
   @Input()showToolBar:boolean;
   @Input()backButtonNavigation:string;
   @Input()backButtonExtras?: NavigationExtras;
-  crudService: CrudService<AppModel<I>, I>;
-  model: AppModel<I>;
-  newRecord: boolean;
+  crudService: CrudService<AppCrudModel<I>, I>;
 
-  protected constructor() {
-    super();
-    this.showToolBar = true;
-    this.newRecord = true;
+
+  @Input()
+  set id(value: I) {
+    this._id = value;
+    this.findById();
+  }
+  get id(): I {
+    return this._id;
   }
 
   ngOnInit(): void {
-    if (this.id) {
-      this.newRecord = false;
-      this.beforeNgOnInitQueryModel();
-      this.service().findById(this.id).subscribe(
-        data => {
-          this.model = data.data;
-          this.fg.patchValue(this.model);
-          this.afterNgOnInitQueryModel();
-          this.afterModelInitiation();
-        },
-        error => {
-          this.handleUnexpectedError(error);
-        }
-      );
-    }else{
-      this.model = this.createNewModelObject();
-      this.afterModelInitiation();
-    }
-    this.fg.valueChanges.subscribe(data => {
-      if (this.fg.valid) {
-        this.onValueChangeBeforeUpdateModel(data);
-        const oldModel:AppModel<I> = this.model;
-        this.model = Object.assign({}, this.model, data);
-        this.onValueChangeAfterUpdateModel(oldModel,data);
-      }
-    });
+
   }
 
+  protected constructor() {
+    super();
+  }
+
+
+  protected initiateComponentDefaults() {
+    super.initiateComponentDefaults();
+    this.showToolBar = true;
+
+  }
+
+  public crudModel():AppCrudModel<I>{
+    return this.model as AppCrudModel<I>;
+  }
+
+  private findById() {
+    this.setOldRecord();
+    this.beforeQueryModel();
+    this.service().findById(this.id).subscribe(
+      data => {
+        this.setModel(data.data);
+        this.fg.patchValue(this.model);
+        this.afterQueryModel();
+        this.afterModelInitiation();
+      },
+      error => {
+        this.handleUnexpectedError(error);
+      }
+    );
+  }
 
   private service() {
     if(!this.crudService){
@@ -67,12 +76,12 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
     if (this.fg.valid) {
       if (this.newRecord) {
         this.beforeInsert();
-        this.service().insert(this.model).subscribe(
+        this.service().insert(this.crudModel()).subscribe(
           data => {
             this.afterInsertSuccess(data.data);
-            this.model = data.data;
+            this.setModel(data.data);
             this.handleSubmitSuccess(data);
-            this.newRecord = false;
+            this.setOldRecord();
           },
           error => {
             this.afterInsertError(error);
@@ -81,10 +90,10 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
         );
       } else {
         this.beforeUpdate();
-        this.service().update(this.model).subscribe(
+        this.service().update(this.crudModel()).subscribe(
           data => {
             this.afterUpdateSuccess(data.data);
-            this.model = data.data;
+            this.setModel(data.data);
             this.handleSubmitSuccess(data);
           },
           error => {
@@ -125,43 +134,13 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
     this.router.navigate([this.backButtonNavigation],this.backButtonExtras);
   }
 
-  public setFormControlValue(formControlId:string,value:any){
-    this.fg.controls[formControlId].setValue(value);
-  }
-
-  public getFormControlValue(formControlId:string):any{
-    return this.fg.controls[formControlId].getRawValue();
-  }
-
-  public patchFormControlValue(formValues:any){
-    this.fg.patchValue(formValues);
-  }
-
-  public disableFormControl(formControlId:string){
-    this.fg.controls[formControlId].disable();
-  }
-
-  public enableFormControl(formControlId:string){
-    this.fg.controls[formControlId].enable();
-  }
-  //override to put your custom form builder
 
 
-  //override method for any before update logic
-  protected onValueChangeBeforeUpdateModel(newData: any) {
-  }
-  //override method for any after update logic
-  protected onValueChangeAfterUpdateModel(oldModel:AppModel<I>,newData: any) {
-  }
-
-  protected addFormControlValueChangeListener(controlName:string,listener: (value: any) => void){
-    this.fg.controls[controlName].valueChanges.subscribe(listener);
-  }
 
 
-  abstract createNewModelObject():AppModel<I>;
 
-  abstract getCrudService(): CrudService<AppModel<I>, I>;
+
+  abstract getCrudService(): CrudService<AppCrudModel<I>, I>;
 
 
 
@@ -189,16 +168,16 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
   }
 
 
-  protected beforeNgOnInitQueryModel() {
+  protected beforeQueryModel() {
 
   }
 
-  protected afterNgOnInitQueryModel() {
+  protected afterQueryModel() {
 
   }
 
 
-  protected afterModelInitiation() {
 
-  }
+
+
 }

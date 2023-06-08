@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AppCrudModel} from '@core/model/app-crud-model';
 
 @Component({
   selector: 'app-demo-regions-page',
@@ -12,4 +13,5 @@ export class DemoRegionsPageComponent implements OnInit {
   ngOnInit() {
   }
 
+  protected readonly AppCrudModel = AppCrudModel;
 }
