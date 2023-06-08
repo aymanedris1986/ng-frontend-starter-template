@@ -1,13 +1,9 @@
-
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {Component, inject, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NavigationExtras} from '@angular/router';
 import {CrudService} from '@core/service/crud-service';
 import {AppCrudModel} from '@core/model/app-crud-model';
 import {ApiResponse} from '@core/model/api-response';
 import {ApplicationInputFormComponent} from '@core/component/application-input-form-component';
-import {BehaviorSubject, Observable, of} from 'rxjs';
-import {AppModel} from '@core/model/app-model';
 import {catchError} from 'rxjs/operators';
 
 @Component({
@@ -122,7 +118,11 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
   }
 
   private handleSubmitSuccess(data: ApiResponse) {
-    this.toastService.info('Saved successfully');
+    this.translateKey('login_title').subscribe(
+      data=>{
+        this.toastService.info(data);
+      }
+    )
   }
 
   private handleSubmitError(error: any) {
