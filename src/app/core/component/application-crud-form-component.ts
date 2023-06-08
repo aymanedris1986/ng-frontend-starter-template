@@ -118,11 +118,7 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
   }
 
   private handleSubmitSuccess(data: ApiResponse) {
-    this.translateKey('login_title').subscribe(
-      data=>{
-        this.toastService.info(data);
-      }
-    )
+    this.toastSuccessFromKey('messages.saved-success');
   }
 
   private handleSubmitError(error: any) {
@@ -139,7 +135,7 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
 
 
   private handleUnexpectedError(error: any) {
-    this.toastService.error('Unexpected error');
+    this.toastErrorFromKey('messages.unexpected-error');
     this.toastService.error(JSON.stringify(error));
   }
 

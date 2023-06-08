@@ -119,6 +119,10 @@
     "ok": "Ok",
     "close": "Close"
   },
+  "messages": {
+    "saved-success": "Saved Successfully",
+    "unexpected-error": "Unexpected error"
+  },
   "profile": "Profile",
   "edit_profile": "Edit profile",
   "logout": "logout",

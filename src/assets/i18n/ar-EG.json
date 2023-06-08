@@ -119,6 +119,11 @@
     "ok": "Ok",
     "close": "Close"
   },
+  "messages": {
+    "saved-success": "تم الحفظ بنجاح",
+    "unexpected-error": "خطأ غير متوقع"
+  }
+  ,
   "profile": "Profile",
   "edit_profile": "Edit profile",
   "logout": "logout",
