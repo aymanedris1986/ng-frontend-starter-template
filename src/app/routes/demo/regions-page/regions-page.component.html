@@ -1,1 +1,3 @@
-<app-demo-regions-page-region-view [id]="4"/>
+<app-demo-regions-page-region-view #REGION [id]="4"/>
+<app-record-audit [model]="REGION.model"></app-record-audit>
+<app-curd-toolbar [crudComponent]="REGION"></app-curd-toolbar>

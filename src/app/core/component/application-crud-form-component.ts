@@ -27,11 +27,10 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
   }
 
   ngOnInit(): void {
-    this.crudService = this.getCrudService();
     if (this.id) {
       this.newRecord = false;
       this.beforeNgOnInitQueryModel();
-      this.crudService.findById(this.id).subscribe(
+      this.service().findById(this.id).subscribe(
         data => {
           this.model = data.data;
           this.fg.patchValue(this.model);
@@ -57,14 +56,18 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
   }
 
 
+  private service() {
+    if(!this.crudService){
+      this.crudService = this.getCrudService();
+    }
+    return this.crudService;
+  }
 
   submit() {
     if (this.fg.valid) {
       if (this.newRecord) {
         this.beforeInsert();
-        this.setCreated();
-        this.setUpdated();
-        this.crudService.insert(this.model).subscribe(
+        this.service().insert(this.model).subscribe(
           data => {
             this.afterInsertSuccess(data.data);
             this.model = data.data;
@@ -78,8 +81,7 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
         );
       } else {
         this.beforeUpdate();
-        this.setUpdated();
-        this.crudService.update(this.model).subscribe(
+        this.service().update(this.model).subscribe(
           data => {
             this.afterUpdateSuccess(data.data);
             this.model = data.data;
@@ -97,7 +99,6 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
 
 
   private handleSubmitSuccess(data: ApiResponse) {
-    this.model = data.data;
     this.toastService.info('Saved successfully');
   }
 
@@ -119,15 +120,6 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
     this.toastService.error(JSON.stringify(error));
   }
 
-  private setUpdated() {
-    this.model.updatedBy = this.user.name!;
-    this.model.updatedAt = new Date();
-  }
-
-  private setCreated() {
-    this.model.createdBy = this.user.name!;
-    this.model.createdAt = new Date();
-  }
 
   back(): void {
     this.router.navigate([this.backButtonNavigation],this.backButtonExtras);
