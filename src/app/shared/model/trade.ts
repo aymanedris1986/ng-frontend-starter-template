@@ -1,5 +1,6 @@
 import {AppCrudModel} from '@core/model/app-crud-model';
 import {TradeSplit} from '@shared/model/trade-split';
+import {Validators} from '@angular/forms';
 
 export class Trade extends AppCrudModel<number>{
   symbol: string;
@@ -22,10 +23,15 @@ export class Trade extends AppCrudModel<number>{
 
   static fg :any  =       {
     symbol: [null],
-    direction: ['LONG'],
-    entryDate: [null],
+    direction: ['LONG', [Validators.required]],
+    entryDate: [new Date(), [Validators.required]],
     exitDate: [null],
     notes: [null],
-    tradeSplitSplitDate:[null]
+    tradeSplitSplitDate:[null],
+    tradeSplitSplitPrice:[null,[this.positiveNumberValidator()]],
+    tradeSplitSplitSize:[null,[this.positiveNumberValidator()]],
+    tradeSplitStopLoss:[null,[this.positiveNumberValidator()]],
+    tradeSplitTakeProfit:[null,[this.positiveNumberValidator()]],
+    tradeSplitCommission:[null,[this.positiveNumberValidator()]],
   };
 }
