@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ApplicationCrudFormComponent} from '@core/component/application-crud-form-component';
 import {AppModel} from '@core/model/app-model';
 import {CrudService} from '@core/service/crud-service';
@@ -14,9 +14,47 @@ import {TradeService} from '@shared/services/application/trade.service';
 })
 export class TradesTradeEditFormComponent extends ApplicationCrudFormComponent<number> implements OnInit {
 
-  constructor(private tradeService:TradeService) { super();}
+  constructor(private tradeService: TradeService) {
+    super();
+  }
 
   ngOnInit() {
+      this.fg.controls['tradeSplitIsClosed'].valueChanges.subscribe(
+        data=>{
+          if (data) {
+            this.disableForm();
+          } else {
+            this.enableForm();
+          }
+        }
+      );
+  }
+
+
+  private enableForm() {
+    this.enableFormControl('symbol');
+    this.enableFormControl('entryDate');
+    this.enableFormControl('exitDate');
+    this.enableFormControl('notes');
+    this.enableFormControl('tradeSplitSplitPrice');
+    this.enableFormControl('tradeSplitSplitSize');
+    this.enableFormControl('tradeSplitStopLoss');
+    this.enableFormControl('tradeSplitTakeProfit');
+    this.enableFormControl('tradeSplitCommission');
+    this.enableFormControl('tradeSplitExitPrice');
+  }
+
+  private disableForm() {
+    this.disableFormControl('symbol');
+    this.disableFormControl('entryDate');
+    this.disableFormControl('exitDate');
+    this.disableFormControl('notes');
+    this.disableFormControl('tradeSplitSplitPrice');
+    this.disableFormControl('tradeSplitSplitSize');
+    this.disableFormControl('tradeSplitStopLoss');
+    this.disableFormControl('tradeSplitTakeProfit');
+    this.disableFormControl('tradeSplitCommission');
+    this.disableFormControl('tradeSplitExitPrice');
   }
 
   createNewModelObject(): AppModel {

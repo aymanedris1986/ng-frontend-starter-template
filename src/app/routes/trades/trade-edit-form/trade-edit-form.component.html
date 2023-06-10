@@ -5,7 +5,7 @@
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="fg" class="form-field-full">
-      <div class="row m-t-16">
+      <div class="row m-t-8">
         <div class="col-sm-6">
           <mat-form-field class="w-full">
             <mat-label>Symbol</mat-label>
@@ -21,7 +21,7 @@
         <div class="col-sm-6">
         </div>
       </div>
-      <div class="row m-t-16">
+      <div class="row m-t-8">
         <div class="col-sm-6">
           <mat-form-field>
             <mat-label>Entry Date</mat-label>
@@ -32,20 +32,12 @@
             <mat-error *ngIf="fg.get('entryDate')?.invalid">
               {{'validations.required' | translate}}
             </mat-error>
+            <!--            <mat-error *ngIf="fg.get('entryDate')?.errors?.dateComparison">-->
+            <!--              Entry Date can't be after exit date-->
+            <!--            </mat-error>-->
           </mat-form-field>
         </div>
-        <div class="col-sm-6">
-          <mat-form-field>
-              <mat-label>Exit Date</mat-label>
-              <mtx-datetimepicker-toggle [for]="exitDate" matSuffix></mtx-datetimepicker-toggle>
-              <mtx-datetimepicker #exitDate startView="month" [timeInterval]="5">
-              </mtx-datetimepicker>
-              <input [mtxDatetimepicker]="exitDate" autocomplete="false" formControlName="exitDate" matInput>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row m-t-16">
-        <div class="col-sm-6">
+        <div class="col-sm-2">
           <mat-form-field>
             <mat-label>Entry Price</mat-label>
             <input matInput placeholder="Entry Price" formControlName="tradeSplitSplitPrice">
@@ -54,7 +46,7 @@
             </mat-error>
           </mat-form-field>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-2">
           <mat-form-field>
             <mat-label>Size</mat-label>
             <input matInput placeholder="Number of shares" formControlName="tradeSplitSplitSize">
@@ -64,37 +56,69 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="row m-t-16">
-        <div class="col-sm-6">
-          <mat-form-field>
-            <mat-label>Stop Loss</mat-label>
-            <input matInput placeholder="Stop Loss" formControlName="tradeSplitStopLoss">
-            <mat-error *ngIf="fg.get('tradeSplitStopLoss')?.errors?.positiveNumber">
-              Must be positive number
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-sm-6">
-          <mat-form-field>
-            <mat-label>Take Profit</mat-label>
-            <input matInput placeholder="Take Profit" formControlName="tradeSplitTakeProfit">
-            <mat-error *ngIf="fg.get('tradeSplitTakeProfit')?.errors?.positiveNumber">
-              Must be positive number
-            </mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row m-t-16">
-        <div class="col-sm-6">
-          <mat-form-field>
-            <mat-label>Commission</mat-label>
-            <input matInput placeholder="Commission" formControlName="tradeSplitCommission">
-            <mat-error *ngIf="fg.get('tradeSplitCommission')?.errors?.positiveNumber">
-              Must be positive number
-            </mat-error>
-          </mat-form-field>
-        </div>
-      </div>
+      <section class="demo-expansion">
+        <mat-expansion-panel #myPanel [expanded]="false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Trade Details</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="row m-t-8">
+            <div class="col-sm-6">
+              <mat-form-field>
+                <mat-label>Commission</mat-label>
+                <input matInput placeholder="Commission" formControlName="tradeSplitCommission">
+                <mat-error *ngIf="fg.get('tradeSplitCommission')?.errors?.positiveNumber">
+                  Must be positive number
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-2">
+              <mat-form-field>
+                <mat-label>Stop Loss</mat-label>
+                <input matInput placeholder="Stop Loss" formControlName="tradeSplitStopLoss">
+                <mat-error *ngIf="fg.get('tradeSplitStopLoss')?.errors?.positiveNumber">
+                  Must be positive number
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-2">
+              <mat-form-field>
+                <mat-label>Take Profit</mat-label>
+                <input matInput placeholder="Take Profit" formControlName="tradeSplitTakeProfit">
+                <mat-error *ngIf="fg.get('tradeSplitTakeProfit')?.errors?.positiveNumber">
+                  Must be positive number
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row m-t-8">
+            <div class="col-sm-6">
+              <mat-form-field>
+                <mat-label>Exit Date</mat-label>
+                <mtx-datetimepicker-toggle [for]="exitDate" matSuffix></mtx-datetimepicker-toggle>
+                <mtx-datetimepicker #exitDate startView="month" [timeInterval]="5">
+                </mtx-datetimepicker>
+                <input [mtxDatetimepicker]="exitDate" autocomplete="false" formControlName="exitDate" matInput>
+                <mat-error *ngIf="fg.get('exitDate')?.errors">
+                  Date Error
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+
+            </div>
+          </div>
+          <div class="row m-t-8">
+            <div class="col-sm-6">
+              <mat-slide-toggle color="primary" formControlName="tradeSplitIsClosed" >
+                Lock Trade
+              </mat-slide-toggle>
+            </div>
+          </div>
+          <mat-action-row>
+          </mat-action-row>
+        </mat-expansion-panel>
+      </section>
+
     </form>
   </mat-card-content>
 </mat-card>

@@ -20,18 +20,21 @@ export class Trade extends AppCrudModel<number>{
   tradeSplitCreatedBy: string;
   tradeSplitUpdatedAt:Date;
   tradeSplitUpdatedBy: string;
+  tradeSplitExitPrice:number;
+  tradeSplitIsClosed:boolean;
 
   static fg :any  =       {
     symbol: [null],
     direction: ['LONG', [Validators.required]],
-    entryDate: [new Date(), [Validators.required]],
-    exitDate: [null],
+    entryDate: [new Date(), [Validators.required,this.fromDateValidator('exitDate')]],
+    exitDate: [null,[this.toDateValidate('entryDate')]],
     notes: [null],
-    tradeSplitSplitDate:[null],
     tradeSplitSplitPrice:[null,[this.positiveNumberValidator()]],
     tradeSplitSplitSize:[null,[this.positiveNumberValidator()]],
     tradeSplitStopLoss:[null,[this.positiveNumberValidator()]],
     tradeSplitTakeProfit:[null,[this.positiveNumberValidator()]],
     tradeSplitCommission:[null,[this.positiveNumberValidator()]],
+    tradeSplitExitPrice:[null,[this.positiveNumberValidator()]],
+    tradeSplitIsClosed:[false]
   };
 }
