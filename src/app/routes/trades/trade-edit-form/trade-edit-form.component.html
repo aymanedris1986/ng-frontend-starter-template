@@ -1,5 +1,5 @@
 {{this.model | json}}
-{{totalPosition}}
+
 <mat-card>
   <mat-card-header>
     <mat-card-title>Trade</mat-card-title>
@@ -55,6 +55,9 @@
               Must be positive number
             </mat-error>
           </mat-form-field>
+        </div>
+        <div class="col-sm-2">
+          <p-button label="Total" icon="pi pi-euro" styleClass="p-button-success" badge="{{totalPosition}}"></p-button>
         </div>
       </div>
       <section class="demo-expansion">
