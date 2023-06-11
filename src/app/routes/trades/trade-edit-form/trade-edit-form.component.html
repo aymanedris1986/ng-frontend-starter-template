@@ -25,7 +25,7 @@
       <div class="row m-t-8">
         <div class="col-sm-6">
           <mat-form-field>
-            <mat-label>Entry Date</mat-label>
+            <mat-label>Entry Time</mat-label>
             <mtx-datetimepicker-toggle [for]="entryDate" matSuffix></mtx-datetimepicker-toggle>
             <mtx-datetimepicker #entryDate startView="month" [timeInterval]="5">
             </mtx-datetimepicker>
@@ -45,6 +45,12 @@
             <mat-error *ngIf="fg.get('tradeSplitSplitPrice')?.errors?.positiveNumber">
               Must be positive number
             </mat-error>
+            <mat-error *ngIf="fg.get('tradeSplitSplitPrice')?.errors?.pricegttp">
+              Greater than take profit
+            </mat-error>
+            <mat-error *ngIf="fg.get('tradeSplitSplitPrice')?.errors?.priceltsl">
+              Less than stop loss
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="col-sm-2">
@@ -57,7 +63,7 @@
           </mat-form-field>
         </div>
         <div class="col-sm-2">
-          <p-button label="Total" icon="pi pi-euro" styleClass="p-button-success" badge="{{totalPosition}}"></p-button>
+          <p-button label="Total" icon="pi pi-dollar" styleClass="p-button-success" badge="{{totalPosition}}"></p-button>
         </div>
       </div>
       <section class="demo-expansion">
@@ -66,7 +72,7 @@
             <mat-panel-title>Trade Details</mat-panel-title>
           </mat-expansion-panel-header>
           <div class="row m-t-8">
-            <div class="col-sm-6">
+            <div class="col-sm-3">
               <mat-form-field>
                 <mat-label>Commission</mat-label>
                 <input matInput placeholder="Commission" formControlName="tradeSplitCommission">
@@ -75,29 +81,44 @@
                 </mat-error>
               </mat-form-field>
             </div>
-            <div class="col-sm-2">
-              <mat-form-field>
-                <mat-label>Stop Loss</mat-label>
-                <input matInput placeholder="Stop Loss" formControlName="tradeSplitStopLoss">
-                <mat-error *ngIf="fg.get('tradeSplitStopLoss')?.errors?.positiveNumber">
-                  Must be positive number
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
               <mat-form-field>
                 <mat-label>Take Profit</mat-label>
                 <input matInput placeholder="Take Profit" formControlName="tradeSplitTakeProfit">
                 <mat-error *ngIf="fg.get('tradeSplitTakeProfit')?.errors?.positiveNumber">
                   Must be positive number
                 </mat-error>
+                <mat-error *ngIf="fg.get('tradeSplitTakeProfit')?.errors?.slgttp">
+                  Less than stop loss
+                </mat-error>
+                <mat-error *ngIf="fg.get('tradeSplitTakeProfit')?.errors?.pricegttp">
+                  Less than price
+                </mat-error>
               </mat-form-field>
+            </div>
+            <div class="col-sm-3">
+              <mat-form-field>
+                <mat-label>Stop Loss</mat-label>
+                <input matInput placeholder="Stop Loss" formControlName="tradeSplitStopLoss">
+                <mat-error *ngIf="fg.get('tradeSplitStopLoss')?.errors?.positiveNumber">
+                  Must be positive number
+                </mat-error>
+                <mat-error *ngIf="fg.get('tradeSplitStopLoss')?.errors?.slgttp">
+                  Greater than take profit
+                </mat-error>
+                <mat-error *ngIf="fg.get('tradeSplitStopLoss')?.errors?.priceltsl">
+                  Greater than than price
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-2">
+              <p-button label="RR" icon="pi pi-exclamation-circle"  [styleClass]="this.rr > 1.5 ? 'p-button-success' : 'p-button-danger'" badge="{{rr}}"></p-button>
             </div>
           </div>
           <div class="row m-t-8">
-            <div class="col-sm-6">
+            <div class="col-sm-3">
               <mat-form-field>
-                <mat-label>Exit Date</mat-label>
+                <mat-label>Exit Time</mat-label>
                 <mtx-datetimepicker-toggle [for]="exitDate" matSuffix></mtx-datetimepicker-toggle>
                 <mtx-datetimepicker #exitDate startView="month" [timeInterval]="5">
                 </mtx-datetimepicker>
@@ -107,8 +128,11 @@
                 </mat-error>
               </mat-form-field>
             </div>
-            <div class="col-sm-6">
-
+            <div class="col-sm-3">
+              <mat-form-field>
+                <mat-label>Exit Price</mat-label>
+                <input matInput placeholder="Exit Price" formControlName="tradeSplitExitPrice">
+              </mat-form-field>
             </div>
           </div>
           <div class="row m-t-8">

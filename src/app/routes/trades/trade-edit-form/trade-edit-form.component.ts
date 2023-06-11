@@ -16,6 +16,7 @@ import {TradeCalculationService} from '@shared/services/application/business/tra
 export class TradesTradeEditFormComponent extends ApplicationCrudFormComponent<number> implements OnInit {
 
   totalPosition:number;
+  rr:number;
   constructor(private tradeService: TradeService,private tradeCalculationService:TradeCalculationService) {
     super();
   }
@@ -28,7 +29,7 @@ export class TradesTradeEditFormComponent extends ApplicationCrudFormComponent<n
   protected onFormValueChange(data: any) {
     const trade :Trade = data as Trade;
     this.totalPosition = this.tradeCalculationService.calcualteTradeTotal(trade.tradeSplitSplitPrice,trade.tradeSplitSplitSize);
-    super.onInvalidFormValueChange(data);
+    this.rr = this.tradeCalculationService.calculateRR(trade.tradeSplitSplitPrice,trade.tradeSplitTakeProfit,trade.tradeSplitStopLoss);
   }
 
   private onLockTrade() {

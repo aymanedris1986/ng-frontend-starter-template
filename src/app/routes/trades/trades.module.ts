@@ -5,6 +5,7 @@ import { TradesNewPositionComponent } from './new-position/new-position.componen
 import { TradesTradeEditFormComponent } from './trade-edit-form/trade-edit-form.component';
 import {BadgeModule} from 'primeng/badge';
 import {ButtonModule} from 'primeng/button';
+import {StyleClassModule} from 'primeng/styleclass';
 
 
 const COMPONENTS: any[] = [TradesNewPositionComponent, TradesTradeEditFormComponent];
@@ -15,7 +16,8 @@ const COMPONENTS_DYNAMIC: any[] = [];
     SharedModule,
     TradesRoutingModule,
     BadgeModule,
-    ButtonModule
+    ButtonModule,
+    StyleClassModule
   ],
   declarations: [
     ...COMPONENTS,
