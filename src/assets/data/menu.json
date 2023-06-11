@@ -13,6 +13,24 @@
       "permissions": {
         "only": "ADMIN"
       }
+    },
+    {
+      "route": "trades",
+      "name": "trades",
+      "type": "sub",
+      "icon": "show_chart",
+      "children": [
+        {
+          "route": "all-trades",
+          "name": "all-trades",
+          "type": "link"
+        }
+      ],
+      "permissions": {
+        "only": [
+          "ADMIN"
+        ]
+      }
     }
   ]
 }

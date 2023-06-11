@@ -7,7 +7,7 @@ import {
   NgZone,
 } from '@angular/core';
 import { SettingsService } from '@core';
-import { Subscription } from 'rxjs';
+import {Observable, of, Subscription} from 'rxjs';
 
 import { DashboardService } from './dashboard.service';
 import {DashboardNumber} from '@shared/model/dashboard-number';
@@ -50,6 +50,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dashboardService.dashboardNumbers().subscribe(
       data =>{
         this.dashboardNumber = data.data;
+        //this.dashboardNumber$ = of(this.dashboardNumber);
       }
     );
   }

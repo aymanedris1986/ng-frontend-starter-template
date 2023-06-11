@@ -1,4 +1,5 @@
 <div *ngIf="this.crudComponent.showToolBar || this.forceShow">
   <button mat-raised-button color="primary" [disabled]="!this.crudComponent.fg.valid" class="m-8" (click)="this.crudComponent.submit()">Save</button>
+  <button mat-raised-button color="secondary" [disabled]="!this.crudComponent.fg.valid" *ngIf="this.crudComponent.backButtonNavigation" class="m-8" (click)="this.crudComponent.submitAndExit()">Save And Exit</button>
   <button mat-raised-button color="basic" *ngIf="this.crudComponent.backButtonNavigation"  class="m-8" (click)="this.crudComponent.back()">Back</button>
 </div>

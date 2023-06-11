@@ -85,9 +85,4 @@ export class TradesTradeEditFormComponent extends ApplicationCrudFormComponent<n
   getLovNames(): string[] {
     return ['SYMBOL'];
   }
-
-  submit() {
-    super.submit();
-    super.back();
-  }
 }

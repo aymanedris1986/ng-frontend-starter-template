@@ -6,9 +6,10 @@ import { TradesTradeEditFormComponent } from './trade-edit-form/trade-edit-form.
 import {BadgeModule} from 'primeng/badge';
 import {ButtonModule} from 'primeng/button';
 import {StyleClassModule} from 'primeng/styleclass';
+import { TradesAllTradesComponent } from './all-trades/all-trades.component';
 
 
-const COMPONENTS: any[] = [TradesNewPositionComponent, TradesTradeEditFormComponent];
+const COMPONENTS: any[] = [TradesNewPositionComponent, TradesTradeEditFormComponent, TradesAllTradesComponent];
 const COMPONENTS_DYNAMIC: any[] = [];
 
 @NgModule({

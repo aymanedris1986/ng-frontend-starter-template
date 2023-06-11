@@ -81,6 +81,11 @@ export abstract class ApplicationCrudFormComponent<I> extends ApplicationInputFo
     }
   }
 
+  submitAndExit(){
+    this.submit();
+    this.back();
+  }
+
 
   private update() {
     this.beforeUpdate();
