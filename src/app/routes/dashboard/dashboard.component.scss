@@ -1,3 +1,23 @@
-.mat-mdc-button-base {
-  margin: 4px;
+//.mat-mdc-button-base {
+//  margin: 4px;
+//}
+
+.full-width-button {
+  width: 90%;
+  height: 60px;
+  font-size: 20px;
+  font-weight: bold;
+  border: 2px solid;
+  border-color: inherit;
 }
+
+.green-button {
+  color: green;
+  background-color: white;
+}
+
+.yellow-button {
+  color: orange;
+  background-color: white;
+}
+

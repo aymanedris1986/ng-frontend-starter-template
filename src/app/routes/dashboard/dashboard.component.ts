@@ -10,6 +10,8 @@ import { SettingsService } from '@core';
 import { Subscription } from 'rxjs';
 
 import { DashboardService } from './dashboard.service';
+import {DashboardNumber} from '@shared/model/dashboard-number';
+import {DashboardServiceService} from '@shared/services/application/dashboard-service.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,16 +34,24 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   notifySubscription!: Subscription;
 
+  dashboardNumber:DashboardNumber;
+
   constructor(
     private ngZone: NgZone,
     private dashboardSrv: DashboardService,
-    private settings: SettingsService
+    private settings: SettingsService,
+    private dashboardService:DashboardServiceService
   ) {}
 
   ngOnInit() {
     this.notifySubscription = this.settings.notify.subscribe(res => {
       console.log(res);
     });
+    this.dashboardService.dashboardNumbers().subscribe(
+      data =>{
+        this.dashboardNumber = data.data;
+      }
+    );
   }
 
   ngAfterViewInit() {
