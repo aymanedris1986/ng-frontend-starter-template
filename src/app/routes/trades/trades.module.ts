@@ -7,9 +7,11 @@ import {BadgeModule} from 'primeng/badge';
 import {ButtonModule} from 'primeng/button';
 import {StyleClassModule} from 'primeng/styleclass';
 import { TradesAllTradesComponent } from './all-trades/all-trades.component';
+import { TradesTradesTableComponent } from './trades-table/trades-table.component';
+import { TradesTradeEditPageComponent } from './trade-edit-page/trade-edit-page.component';
 
 
-const COMPONENTS: any[] = [TradesNewPositionComponent, TradesTradeEditFormComponent, TradesAllTradesComponent];
+const COMPONENTS: any[] = [TradesNewPositionComponent, TradesTradeEditFormComponent, TradesAllTradesComponent, TradesTradesTableComponent, TradesTradeEditPageComponent];
 const COMPONENTS_DYNAMIC: any[] = [];
 
 @NgModule({

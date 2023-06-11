@@ -1,0 +1,10 @@
+<mtx-grid [data]="tradesList"
+          [columns]="columns"
+          [multiSelectable]="true"
+          [hideRowSelectionCheckbox]="false"
+          [rowSelectable]="true"
+          [rowSelected]="[]"
+          (rowSelectionChange)="log($event)"
+          (cellSelectionChange)="log($event)"
+          [showPaginator]="false">
+</mtx-grid>
