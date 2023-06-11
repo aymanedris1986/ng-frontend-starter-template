@@ -86,4 +86,8 @@ export class TradesTradeEditFormComponent extends ApplicationCrudFormComponent<n
     return ['SYMBOL'];
   }
 
+  submit() {
+    super.submit();
+    super.back();
+  }
 }
