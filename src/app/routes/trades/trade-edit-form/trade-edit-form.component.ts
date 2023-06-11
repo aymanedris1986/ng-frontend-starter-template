@@ -6,6 +6,7 @@ import {FormGroup} from '@angular/forms';
 import {AppCrudModel} from '@core/model/app-crud-model';
 import {Trade} from '@shared/model/trade';
 import {TradeService} from '@shared/services/application/trade.service';
+import {TradeCalculationService} from '@shared/services/application/business/trade-calculation.service';
 
 @Component({
   selector: 'app-trades-trade-edit-form',
@@ -14,22 +15,33 @@ import {TradeService} from '@shared/services/application/trade.service';
 })
 export class TradesTradeEditFormComponent extends ApplicationCrudFormComponent<number> implements OnInit {
 
-  constructor(private tradeService: TradeService) {
+  totalPosition:number;
+  constructor(private tradeService: TradeService,private tradeCalculationService:TradeCalculationService) {
     super();
   }
 
   ngOnInit() {
-      this.fg.controls['tradeSplitIsClosed'].valueChanges.subscribe(
-        data=>{
-          if (data) {
-            this.disableForm();
-          } else {
-            this.enableForm();
-          }
-        }
-      );
+    this.onLockTrade();
   }
 
+
+  protected onFormValueChange(data: any) {
+    const trade :Trade = data as Trade;
+    this.totalPosition = this.tradeCalculationService.calcualteTradeTotal(trade.tradeSplitSplitPrice,trade.tradeSplitSplitSize);
+    super.onInvalidFormValueChange(data);
+  }
+
+  private onLockTrade() {
+    this.fg.controls['tradeSplitIsClosed'].valueChanges.subscribe(
+      data => {
+        if (data) {
+          this.disableForm();
+        } else {
+          this.enableForm();
+        }
+      }
+    );
+  }
 
   private enableForm() {
     this.enableFormControl('symbol');
