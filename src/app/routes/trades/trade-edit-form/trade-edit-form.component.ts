@@ -30,6 +30,7 @@ export class TradesTradeEditFormComponent extends ApplicationCrudFormComponent<n
     const trade :Trade = data as Trade;
     this.totalPosition = this.tradeCalculationService.calcualteTradeTotal(trade.tradeSplitSplitPrice,trade.tradeSplitSplitSize);
     this.rr = this.tradeCalculationService.calculateRR(trade.tradeSplitSplitPrice,trade.tradeSplitTakeProfit,trade.tradeSplitStopLoss);
+    
   }
 
   private onLockTrade() {
