@@ -15,22 +15,12 @@ import {TradeCalculationService} from '@shared/services/application/business/tra
 })
 export class TradesTradeEditFormComponent extends ApplicationCrudFormComponent<number> implements OnInit {
 
-  totalPosition:number;
-  rr:number;
   constructor(private tradeService: TradeService,private tradeCalculationService:TradeCalculationService) {
     super();
   }
 
   ngOnInit() {
     this.onLockTrade();
-  }
-
-
-  protected onFormValueChange(data: any) {
-    const trade :Trade = data as Trade;
-    this.totalPosition = this.tradeCalculationService.calcualteTradeTotal(trade.tradeSplitSplitPrice,trade.tradeSplitSplitSize);
-    this.rr = this.tradeCalculationService.calculateRR(trade.tradeSplitSplitPrice,trade.tradeSplitTakeProfit,trade.tradeSplitStopLoss);
-    
   }
 
   private onLockTrade() {
@@ -86,4 +76,33 @@ export class TradesTradeEditFormComponent extends ApplicationCrudFormComponent<n
   getLovNames(): string[] {
     return ['SYMBOL'];
   }
+
+  tradeDetailsExpanded(): boolean {
+    return this.id !== null && this.id !== undefined;
+  }
+
+
+  changeLockTrade(event:any){
+    this.setFormControlValue('tradeSplitIsClosed',event.checked);
+  }
+
+  getLockTradeChecked(){
+    return  this.getFormControlValue('tradeSplitIsClosed');
+  }
+
+
+  get totalPosition(): number {
+    const tradeSplitSplitPrice = this.getFormControlValue('tradeSplitSplitPrice');
+    const tradeSplitSplitSize = this.getFormControlValue('tradeSplitSplitSize');
+    return this.tradeCalculationService.calcualteTradeTotal(tradeSplitSplitPrice,tradeSplitSplitSize);
+  }
+
+  get rr(){
+    const tradeSplitSplitPrice = this.getFormControlValue('tradeSplitSplitPrice');
+    const tradeSplitTakeProfit = this.getFormControlValue('tradeSplitTakeProfit');
+    const tradeSplitStopLoss = this.getFormControlValue('tradeSplitStopLoss');
+    return this.tradeCalculationService.calculateRR(tradeSplitSplitPrice,tradeSplitTakeProfit,tradeSplitStopLoss);
+  }
+
+
 }

@@ -71,7 +71,7 @@
         </div>
       </div>
       <section class="demo-expansion">
-        <mat-expansion-panel #myPanel [expanded]="false">
+        <mat-expansion-panel #myPanel [expanded]="this.tradeDetailsExpanded()">
           <mat-expansion-panel-header>
             <mat-panel-title>Trade Details</mat-panel-title>
           </mat-expansion-panel-header>
@@ -141,7 +141,8 @@
           </div>
           <div class="row m-t-8">
             <div class="col-sm-6">
-              <mat-slide-toggle color="primary" formControlName="tradeSplitIsClosed">
+              <mat-slide-toggle color="primary"  [disabled]="!this.fg.valid"
+                                [checked]="getLockTradeChecked()" (change)="changeLockTrade($event)">
                 Lock Trade
               </mat-slide-toggle>
             </div>
