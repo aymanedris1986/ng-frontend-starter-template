@@ -1,0 +1,22 @@
+
+
+<mat-card>
+  <mat-card-content>
+    <mat-horizontal-stepper [linear]="true" #stepper>
+
+      <mat-step *ngFor="let trade of bulkEditTrades">
+        <form >
+          <ng-template matStepLabel>{{trade.symbol}} {{trade.entryDate}}</ng-template>
+
+          <div>
+            <button mat-raised-button color="primary" mat-button matStepperNext>Next</button>
+          </div>
+          <div>
+            <button mat-raised-button color="primary" mat-button matStepperPrevious>Previous</button>
+          </div>
+          <app-trades-trade-edit-form *ngIf="trade" [id]="trade.id"></app-trades-trade-edit-form>
+        </form>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </mat-card-content>
+</mat-card>

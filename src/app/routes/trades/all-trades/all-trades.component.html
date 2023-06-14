@@ -1,2 +1,4 @@
 <breadcrumb></breadcrumb>
 <app-trades-trades-table *ngIf="tradeList$" [tradesList$]="tradeList$" (rowSelected)="rowSelectedEvent($event)"></app-trades-trades-table>
+<button mat-raised-button color="primary" (click)="bulkEdit()">Bulk Edit</button>
+<app-trades-trade-bulk-editor *ngIf="this.bulkEditTrades && this.bulkEditTrades.length > 0" [bulkEditTrades]="this.bulkEditTrades"></app-trades-trade-bulk-editor>

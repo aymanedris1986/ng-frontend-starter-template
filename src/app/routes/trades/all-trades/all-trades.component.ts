@@ -11,6 +11,7 @@ import {Trade} from '@shared/model/trade';
 export class TradesAllTradesComponent implements OnInit {
   tradeList$:Observable<Trade[]>;
   selectedTrades:Trade[] = [];
+  bulkEditTrades:Trade[] = [];
   constructor(private tradeService:TradeService) { }
 
   ngOnInit() {
@@ -23,6 +24,10 @@ export class TradesAllTradesComponent implements OnInit {
 
   rowSelectedEvent(event:any){
     this.selectedTrades = event;
+  }
+
+  bulkEdit(){
+    this.bulkEditTrades = this.selectedTrades;
   }
 
 }
