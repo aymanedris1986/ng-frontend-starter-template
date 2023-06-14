@@ -104,5 +104,22 @@ export class TradesTradeEditFormComponent extends ApplicationCrudFormComponent<n
     return this.tradeCalculationService.calculateRR(tradeSplitSplitPrice,tradeSplitTakeProfit,tradeSplitStopLoss);
   }
 
+  get lockTradeDisabled():boolean{
+    if(!this.fg.valid){
+      return true;
+    }
+    const trade = this.model as Trade;
+    if(!trade.tradeSplitSplitPrice){
+      return true;
+    }
+    if(!trade.tradeSplitExitPrice){
+      return true;
+    }
+    if(!trade.exitDate){
+      return true;
+    }
+    return false;
+  }
+
 
 }

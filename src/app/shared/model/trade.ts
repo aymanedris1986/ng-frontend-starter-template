@@ -26,8 +26,8 @@ export class Trade extends AppCrudModel<number>{
   static fg :any  =       {
     symbol: [null],
     direction: ['LONG', [Validators.required]],
-    entryDate: [new Date(), [Validators.required,this.fromDateValidator('exitDate')]],
-    exitDate: [null,[this.toDateValidate('entryDate')]],
+    entryDate: [new Date(), [Validators.required,this.cantBeInTheFuture(),this.fromDateValidator('exitDate')]],
+    exitDate: [null,[this.cantBeInTheFuture(),this.toDateValidate('entryDate')]],
     notes: [null],
     tradeSplitSplitPrice:[null,[this.positiveNumberValidator(),this.priceValidator()]],
     tradeSplitSplitSize:[null,[this.positiveNumberValidator()]],

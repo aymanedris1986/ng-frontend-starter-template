@@ -1,5 +1,4 @@
-{{this.model | json}}
-
+<!--{{this.model | json}}-->
 <mat-card>
   <mat-card-header>
     <mat-card-title>Trade</mat-card-title>
@@ -34,12 +33,12 @@
             <mtx-datetimepicker #entryDate startView="month" [timeInterval]="5">
             </mtx-datetimepicker>
             <input [mtxDatetimepicker]="entryDate" autocomplete="false" formControlName="entryDate" matInput required>
+            <mat-error *ngIf="fg.get('entryDate')?.errors?.cantbeinfuture">
+              Cant be in the future
+            </mat-error>
             <mat-error *ngIf="fg.get('entryDate')?.invalid">
               {{'validations.required' | translate}}
             </mat-error>
-            <!--            <mat-error *ngIf="fg.get('entryDate')?.errors?.dateComparison">-->
-            <!--              Entry Date can't be after exit date-->
-            <!--            </mat-error>-->
           </mat-form-field>
         </div>
         <div class="col-sm-2">
@@ -130,6 +129,9 @@
                 <mat-error *ngIf="fg.get('exitDate')?.errors">
                   Date Error
                 </mat-error>
+                <mat-error *ngIf="fg.get('exitDate')?.errors?.cantbeinfuture">
+                  Cant be in the future
+                </mat-error>
               </mat-form-field>
             </div>
             <div class="col-sm-3">
@@ -141,8 +143,7 @@
           </div>
           <div class="row m-t-8">
             <div class="col-sm-6">
-              <mat-slide-toggle color="primary"  [disabled]="!this.fg.valid"
-                                [checked]="getLockTradeChecked()" (change)="changeLockTrade($event)">
+              <mat-slide-toggle color="primary" [disabled]="this.lockTradeDisabled" [checked]="getLockTradeChecked()" (change)="changeLockTrade($event)">
                 Lock Trade
               </mat-slide-toggle>
             </div>

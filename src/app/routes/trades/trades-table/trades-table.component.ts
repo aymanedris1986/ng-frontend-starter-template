@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Trade} from '@shared/model/trade';
 import {MtxGridColumn} from '@ng-matero/extensions/grid';
@@ -14,6 +14,8 @@ export class TradesTradesTableComponent extends ApplicationComponent implements 
 
   @Input()tradesList$:Observable<Trade[]>;
   tradesList:Trade[];
+  selectedTrades:Trade[];
+  @Output() rowSelected: EventEmitter<Trade[]> = new EventEmitter<Trade[]>();
 
   columns: MtxGridColumn[] = [
     { header: 'Symbol', field: 'symbol' },
@@ -47,7 +49,8 @@ export class TradesTradesTableComponent extends ApplicationComponent implements 
   }
 
   log(e: any) {
-    console.log(e);
+    this.selectedTrades = e;
+    this.rowSelected.emit(this.selectedTrades);
   }
 
   edit(record: any): void {

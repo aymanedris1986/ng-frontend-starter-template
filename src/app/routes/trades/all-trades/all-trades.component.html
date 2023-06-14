@@ -1,3 +1,2 @@
-<page-header></page-header>
-
-<app-trades-trades-table *ngIf="tradeList$" [tradesList$]="tradeList$"></app-trades-trades-table>
+<breadcrumb></breadcrumb>
+<app-trades-trades-table *ngIf="tradeList$" [tradesList$]="tradeList$" (rowSelected)="rowSelectedEvent($event)"></app-trades-trades-table>

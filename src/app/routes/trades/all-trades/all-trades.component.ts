@@ -10,6 +10,7 @@ import {Trade} from '@shared/model/trade';
 })
 export class TradesAllTradesComponent implements OnInit {
   tradeList$:Observable<Trade[]>;
+  selectedTrades:Trade[] = [];
   constructor(private tradeService:TradeService) { }
 
   ngOnInit() {
@@ -18,6 +19,10 @@ export class TradesAllTradesComponent implements OnInit {
         this.tradeList$ = of(data.data);
       }
     );
+  }
+
+  rowSelectedEvent(event:any){
+    this.selectedTrades = event;
   }
 
 }

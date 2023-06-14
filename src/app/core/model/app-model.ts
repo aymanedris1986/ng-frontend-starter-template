@@ -38,4 +38,17 @@ export class AppModel {
       return null;
     };
   }
+
+  static cantBeInTheFuture(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const value = control.value;
+      if (value) {
+        const controlDate = new Date( value);
+        if(controlDate > new Date(Date.now())){
+          return { cantbeinfuture: true };
+        }
+      }
+      return null;
+    };
+  }
 }
