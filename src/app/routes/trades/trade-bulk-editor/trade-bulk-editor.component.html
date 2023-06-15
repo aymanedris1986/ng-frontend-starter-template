@@ -2,21 +2,19 @@
 
 <mat-card>
   <mat-card-content>
-    <mat-horizontal-stepper [linear]="true" #stepper>
+    <mat-vertical-stepper [linear]="false" #stepper (selectionChange)="selectionChange($event)">
 
-      <mat-step *ngFor="let trade of bulkEditTrades">
+      <mat-step *ngFor="let trade of bulkEditTrades;let i=index" #step  [completed]="this.currentForm?.fg?.valid!"  [hasError]="isHasError(i)" errorMessage="Trade contains errors">
         <form >
-          <ng-template matStepLabel>{{trade.symbol}} {{trade.entryDate}}</ng-template>
-
+          <ng-template matStepLabel>{{trade.symbol}} {{trade.entryDate}} </ng-template>
+          <app-trades-trade-edit-form *ngIf="trade" [id]="trade.id" #tform></app-trades-trade-edit-form>
           <div>
-            <button mat-raised-button color="primary" mat-button matStepperNext>Next</button>
+            <button mat-button matStepperNext [disabled]="isHasError(i)">Save & Next</button>
           </div>
-          <div>
-            <button mat-raised-button color="primary" mat-button matStepperPrevious>Previous</button>
-          </div>
-          <app-trades-trade-edit-form *ngIf="trade" [id]="trade.id"></app-trades-trade-edit-form>
         </form>
       </mat-step>
-    </mat-horizontal-stepper>
+
+    </mat-vertical-stepper>
+
   </mat-card-content>
 </mat-card>
