@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren} from '@angular/core';
 import {Trade} from '@shared/model/trade';
 import {StepperSelectionEvent} from '@angular/cdk/stepper';
 import {TradesTradeEditFormComponent} from '../trade-edit-form/trade-edit-form.component';
@@ -12,6 +12,7 @@ export class TradesTradeBulkEditorComponent implements OnInit {
 
   @Input()bulkEditTrades:Trade[] = [];
   currentIndex = 0;
+  @Output() wizardFinished: EventEmitter<any> = new EventEmitter();
 
   @ViewChildren(TradesTradeEditFormComponent) form: QueryList<TradesTradeEditFormComponent>
 
@@ -34,6 +35,13 @@ export class TradesTradeBulkEditorComponent implements OnInit {
     return !this.form?.get(index)?.fg.valid;
   }
 
+  isLastStep(index:number):boolean{
+    return this.form?.length-1 == index;
+  }
 
 
+  saveAndFinish(index: number) {
+    this.form?.get(index)?.submit();
+    this.wizardFinished.emit('finished');
+  }
 }

@@ -30,4 +30,7 @@ export class TradesAllTradesComponent implements OnInit {
     this.bulkEditTrades = this.selectedTrades;
   }
 
+  hideWizard($event: any) {
+    this.bulkEditTrades = [];
+  }
 }
