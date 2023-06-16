@@ -10,9 +10,11 @@ import { TradesAllTradesComponent } from './all-trades/all-trades.component';
 import { TradesTradesTableComponent } from './trades-table/trades-table.component';
 import { TradesTradeEditPageComponent } from './trade-edit-page/trade-edit-page.component';
 import { TradesTradeBulkEditorComponent } from './trade-bulk-editor/trade-bulk-editor.component';
+import { TradesNewPairAddComponent } from './new-pair-add/new-pair-add.component';
+import { TradesNewPairDialogComponent } from './new-pair-dialog/new-pair-dialog.component';
 
 
-const COMPONENTS: any[] = [TradesNewPositionComponent, TradesTradeEditFormComponent, TradesAllTradesComponent, TradesTradesTableComponent, TradesTradeEditPageComponent, TradesTradeBulkEditorComponent];
+const COMPONENTS: any[] = [TradesNewPositionComponent, TradesTradeEditFormComponent, TradesAllTradesComponent, TradesTradesTableComponent, TradesTradeEditPageComponent, TradesTradeBulkEditorComponent, TradesNewPairAddComponent, TradesNewPairDialogComponent];
 const COMPONENTS_DYNAMIC: any[] = [];
 
 @NgModule({

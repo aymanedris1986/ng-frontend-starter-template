@@ -9,9 +9,11 @@
         <div class="col-sm-5">
           <mat-form-field class="w-full">
             <mat-label>Symbol</mat-label>
-            <mtx-select [items]="(this.lovMap['SYMBOL'] | async)!" formControlName="symbol" bindLabel="name"
-                        bindValue="id"
+            <mtx-select  formControlName="symbol"
                         autofocus required>
+              <mtx-option *ngFor="let symbol of this.symbols" [value]="symbol.id">
+                {{symbol.name}}
+              </mtx-option>
               <mat-error *ngIf="fg.get('symbol')?.invalid">
                 {{'validations.required' | translate}}
               </mat-error>
@@ -20,7 +22,7 @@
         </div>
         <div class="col-sm-1" *ngIf="!id">
           <button mat-fab
-                  aria-label="Add Symbol">
+                  aria-label="Add Symbol" (click)="newSymbol()">
             <mat-icon>add_circle_outline</mat-icon>
           </button>
         </div>

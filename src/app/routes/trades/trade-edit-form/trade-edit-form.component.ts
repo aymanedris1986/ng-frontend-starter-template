@@ -7,6 +7,10 @@ import {AppCrudModel} from '@core/model/app-crud-model';
 import {Trade} from '@shared/model/trade';
 import {TradeService} from '@shared/services/application/trade.service';
 import {TradeCalculationService} from '@shared/services/application/business/trade-calculation.service';
+import {TradesNewPairDialogComponent} from '../new-pair-dialog/new-pair-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {Observable} from 'rxjs';
+import {LovRecord} from '@core/model/lov-record';
 
 @Component({
   selector: 'app-trades-trade-edit-form',
@@ -14,12 +18,20 @@ import {TradeCalculationService} from '@shared/services/application/business/tra
   styleUrls: ['./trade-edit-form.component.scss']
 })
 export class TradesTradeEditFormComponent extends ApplicationCrudFormComponent<number> implements OnInit {
+  lovMapElement:Observable<LovRecord[]>
+  symbols:LovRecord[];
 
-  constructor(private tradeService: TradeService,private tradeCalculationService:TradeCalculationService) {
+  constructor(private tradeService: TradeService,private tradeCalculationService:TradeCalculationService,public dialog: MatDialog) {
     super();
   }
 
   ngOnInit() {
+    this.lovMapElement = this.lovMap['SYMBOL'];
+    this.lovMapElement.subscribe(
+      data=>{
+        this.symbols = data;
+      }
+    )
     this.onLockTrade();
   }
 
@@ -128,4 +140,19 @@ export class TradesTradeEditFormComponent extends ApplicationCrudFormComponent<n
   }
 
 
+  newSymbol() {
+    const dialogRef = this.dialog.open(TradesNewPairDialogComponent,{data : {}});
+    dialogRef.afterClosed().subscribe(
+      (symbolCode: string)=>{
+        this.symbols = [];
+        this.lovMapElement.subscribe(
+          data=>{
+            this.symbols = data;
+            this.setFormControlValue('symbol',symbolCode);
+            this.submit();
+          }
+        )
+      }
+    );
+  }
 }
