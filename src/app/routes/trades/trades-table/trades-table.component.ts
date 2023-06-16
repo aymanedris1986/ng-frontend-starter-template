@@ -2,8 +2,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Trade} from '@shared/model/trade';
 import {MtxGridColumn} from '@ng-matero/extensions/grid';
-import {AppComponent} from '../../../app.component';
 import {ApplicationComponent} from '@core/component/application-component';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-trades-trades-table',
@@ -19,7 +19,7 @@ export class TradesTradesTableComponent extends ApplicationComponent implements 
 
   columns: MtxGridColumn[] = [
     { header: 'Symbol', field: 'symbol' },
-    { header: 'Entry Time', field: 'entryDate' },
+    { header: 'Entry Time', field: 'entryDate' ,formatter: (data: any) => `<span class="label">${  formatDate(data.entryDate, 'short', 'en-US', 'Africa/Cairo') }</span>`},
     {
       header: 'Edit',
       field: 'operation',

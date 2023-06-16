@@ -30,7 +30,7 @@
           <mat-form-field>
             <mat-label>Entry Time</mat-label>
             <mtx-datetimepicker-toggle [for]="entryDate" matSuffix></mtx-datetimepicker-toggle>
-            <mtx-datetimepicker #entryDate startView="month" [timeInterval]="5">
+            <mtx-datetimepicker  #entryDate startView="month" [timeInterval]="5">
             </mtx-datetimepicker>
             <input [mtxDatetimepicker]="entryDate" autocomplete="false" formControlName="entryDate" matInput required>
             <mat-error *ngIf="fg.get('entryDate')?.errors?.cantbeinfuture">
@@ -40,6 +40,7 @@
               {{'validations.required' | translate}}
             </mat-error>
           </mat-form-field>
+
         </div>
         <div class="col-sm-2">
           <mat-form-field>

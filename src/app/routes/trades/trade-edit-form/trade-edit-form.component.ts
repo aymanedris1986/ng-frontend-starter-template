@@ -23,6 +23,12 @@ export class TradesTradeEditFormComponent extends ApplicationCrudFormComponent<n
     this.onLockTrade();
   }
 
+
+  protected onFormValueChange(data: any) {
+    super.onFormValueChange(data);
+    console.log(data);
+  }
+
   private onLockTrade() {
     this.fg.controls['tradeSplitIsClosed'].valueChanges.subscribe(
       data => {
