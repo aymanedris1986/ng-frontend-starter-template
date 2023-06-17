@@ -3,15 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { Token, User } from './interface';
 import { Menu } from '@core';
 import { map } from 'rxjs/operators';
+import {environment} from '@env/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
+  url: string = environment.baseApiUrl ;
   constructor(protected http: HttpClient) {}
 
   login(username: string, password: string, rememberMe = false) {
-    return this.http.post<Token>('http://localhost:8585/v1/api'+'/auth/login', { username, password, rememberMe });
+    return this.http.post<Token>(this.url+'/auth/login', { username, password, rememberMe });
   }
 
   refresh(params: Record<string, any>) {
@@ -23,7 +25,7 @@ export class LoginService {
   }
 
   me() {
-    return this.http.get<User>('http://localhost:8585/v1/api'+'/id/me');
+    return this.http.get<User>(this.url+'/id/me');
   }
 
   menu() {
