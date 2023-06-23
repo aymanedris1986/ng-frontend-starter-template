@@ -24,12 +24,9 @@ const routes: Routes = [
       { path: '403', component: Error403Component },
       { path: '404', component: Error404Component },
       { path: '500', component: Error500Component },
-      {
-        path: 'profile',
-        loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule),
-      },
-  { path: 'demo', loadChildren: () => import('./demo/demo.module').then(m => m.DemoModule) },
-  { path: 'trades', loadChildren: () => import('./trades/trades.module').then(m => m.TradesModule) },
+      { path: 'profile',loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule) },
+      { path: 'demo', loadChildren: () => import('./demo/demo.module').then(m => m.DemoModule) },
+      { path: 'trades', loadChildren: () => import('./trades/trades.module').then(m => m.TradesModule) },
     ],
   },
   {

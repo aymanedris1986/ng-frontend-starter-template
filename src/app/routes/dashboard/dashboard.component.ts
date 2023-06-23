@@ -6,12 +6,13 @@ import {
   ChangeDetectionStrategy,
   NgZone,
 } from '@angular/core';
-import { SettingsService } from '@core';
+import {SettingsService} from '@core';
 import {Observable, of, Subscription} from 'rxjs';
 
-import { DashboardService } from './dashboard.service';
+import {DashboardService} from './dashboard.service';
 import {DashboardNumber} from '@shared/model/dashboard-number';
 import {DashboardServiceService} from '@shared/services/application/dashboard-service.service';
+import {ApplicationComponent} from '@core/component/application-component';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +21,7 @@ import {DashboardServiceService} from '@shared/services/application/dashboard-se
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DashboardService],
 })
-export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+export class DashboardComponent extends ApplicationComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = this.dashboardSrv.getData();
 
@@ -34,21 +35,23 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   notifySubscription!: Subscription;
 
-  dashboardNumber:DashboardNumber;
+  dashboardNumber: DashboardNumber;
 
   constructor(
     private ngZone: NgZone,
     private dashboardSrv: DashboardService,
     private settings: SettingsService,
-    private dashboardService:DashboardServiceService
-  ) {}
+    private dashboardService: DashboardServiceService
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.notifySubscription = this.settings.notify.subscribe(res => {
       console.log(res);
     });
     this.dashboardService.dashboardNumbers().subscribe(
-      data =>{
+      data => {
         this.dashboardNumber = data.data;
         //this.dashboardNumber$ = of(this.dashboardNumber);
       }

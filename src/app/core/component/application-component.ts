@@ -4,6 +4,7 @@ import {AuthService, User} from '@core';
 import {ToastrService} from 'ngx-toastr';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
+import {NgxPermissionsService, NgxRolesService} from 'ngx-permissions';
 
 @Component({
   selector: 'application-component',
@@ -15,6 +16,8 @@ export abstract class ApplicationComponent {
   toastService:ToastrService = inject(ToastrService);
   router: Router = inject(Router);
   translateService: TranslateService = inject(TranslateService);
+  rolesService:NgxRolesService = inject(NgxRolesService);
+  permissionsService:NgxPermissionsService = inject(NgxPermissionsService);
 
   protected constructor() {
     this.auth.user().subscribe(user => (this.user = user));
