@@ -149,9 +149,9 @@ export class InMemDataService implements InMemoryDbService {
     //   return this.login(reqInfo);
     // }
 
-    if (is(reqInfo, 'auth/refresh')) {
-      return this.refresh(reqInfo);
-    }
+    // if (is(reqInfo, 'auth/refresh')) {
+    //   return this.refresh(reqInfo);
+    // }
 
     if (is(reqInfo, 'auth/logout')) {
       return this.logout(reqInfo);

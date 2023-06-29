@@ -47,7 +47,6 @@ import { FakeLoginService } from './fake-login.service';
   ],
   providers: [
     { provide: BASE_URL, useValue: environment.baseUrl },
-    { provide: LoginService, useClass: FakeLoginService }, // <= Remove it in the real APP
     httpInterceptorProviders,
     appInitializerProviders,
   ],

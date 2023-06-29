@@ -16,6 +16,11 @@ export class LoginService {
     return this.http.post<Token>(this.url+'/auth/login', { username, password, rememberMe });
   }
 
+  refreshToken(refreshToken:string){
+    return this.http.post<Token>(this.url+'/auth/refreshToken', { refreshToken });
+  }
+
+
   refresh(params: Record<string, any>) {
     return this.http.post<Token>('/auth/refresh', params);
   }
