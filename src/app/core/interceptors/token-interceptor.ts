@@ -9,7 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { TokenService } from '@core/authentication';
+import {LoginService, TokenService} from '@core/authentication';
 import { BASE_URL } from './base-url-interceptor';
 
 @Injectable()
@@ -19,6 +19,7 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(
     private tokenService: TokenService,
     private router: Router,
+    private loginService:LoginService,
     @Optional() @Inject(BASE_URL) private baseUrl?: string
   ) {}
 
@@ -32,27 +33,42 @@ export class TokenInterceptor implements HttpInterceptor {
         this.router.navigateByUrl('/dashboard');
       }
     };
-
-    if (this.tokenService.valid() && this.shouldAppendToken(request.url)) {
-      return next
-        .handle(
-          request.clone({
-            headers: request.headers.append('Authorization', this.tokenService.getBearerToken()),
-            withCredentials: true,
-          })
-        )
-        .pipe(
-          catchError((error: HttpErrorResponse) => {
-            if (error.status === 401) {
-              this.tokenService.clear();
-            }
-            return throwError(() => error);
-          }),
-          tap(() => handler())
-        );
+    if(request.url.includes('/auth/refresh-token')){
+      return next.handle(request);
     }
 
+    if(this.tokenService.getBearerToken() && !this.tokenService.refreshTokenExpired()){
+      this.loginService.refreshToken(this.tokenService.getRefreshToken()!).subscribe(
+        data=>{
+          this.tokenService.set(data);
+        }
+      );
+      return this.appendTokenToHeader('Bearer '+this.tokenService.getRefreshToken()!,next, request, handler);
+    }
+
+    if (this.tokenService.valid() && this.shouldAppendToken(request.url)) {
+      return this.appendTokenToHeader(this.tokenService.getBearerToken(),next, request, handler);
+    }
     return next.handle(request).pipe(tap(() => handler()));
+  }
+
+  private appendTokenToHeader(token:string,next: HttpHandler, request: HttpRequest<unknown>, handler: () => void) {
+    return next
+      .handle(
+        request.clone({
+          headers: request.headers.append('Authorization', token),
+          withCredentials: true,
+        })
+      )
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 401) {
+            this.tokenService.clear();
+          }
+          return throwError(() => error);
+        }),
+        tap(() => handler())
+      );
   }
 
   private shouldAppendToken(url: string) {

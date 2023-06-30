@@ -20,8 +20,12 @@ export abstract class BaseToken {
     return this.attributes.exp;
   }
 
+  get refresh_exp():number | void {
+    return this.attributes.refresh_token_exp;
+  }
+
   valid(): boolean {
-    return this.hasAccessToken() && !this.isExpired();
+    return this.hasAccessToken() && !this.isRefreshExpired();
   }
 
   getBearerToken(): string {
@@ -42,7 +46,11 @@ export abstract class BaseToken {
     return !!this.access_token;
   }
 
-  private isExpired(): boolean {
+  public isRefreshExpired(): boolean {
+    return this.refresh_exp !== undefined && this.refresh_exp - currentTimestamp() <= 0;
+  }
+
+  public isExpired(): boolean {
     return this.exp !== undefined && this.exp - currentTimestamp() <= 0;
   }
 }

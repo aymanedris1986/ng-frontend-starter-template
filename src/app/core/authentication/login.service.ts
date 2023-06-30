@@ -17,7 +17,7 @@ export class LoginService {
   }
 
   refreshToken(refreshToken:string){
-    return this.http.post<Token>(this.url+'/auth/refreshToken', { refreshToken });
+    return this.http.post<Token>(this.url+'/auth/refresh-token', { refreshToken });
   }
 
 

@@ -34,7 +34,7 @@ export class TokenService implements OnDestroy {
   }
 
   refresh(): Observable<BaseToken | undefined> {
-    this.buildRefresh();
+    //this.buildRefresh();
 
     return this.refresh$.pipe(share());
   }
@@ -51,6 +51,10 @@ export class TokenService implements OnDestroy {
 
   valid(): boolean {
     return this.token?.valid() ?? false;
+  }
+
+  refreshTokenExpired(){
+    return this.token?.isRefreshExpired() ?? true;
   }
 
   getBearerToken(): string {
@@ -78,7 +82,7 @@ export class TokenService implements OnDestroy {
     }
 
     this.change$.next(this.token);
-    this.buildRefresh();
+    //this.buildRefresh();
   }
 
   private buildRefresh() {
