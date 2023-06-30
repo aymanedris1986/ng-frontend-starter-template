@@ -57,6 +57,10 @@ export class TokenService implements OnDestroy {
     return this.token?.isRefreshExpired() ?? true;
   }
 
+  tokenExpired(){
+    return this.token?.isExpired() ?? true;
+  }
+
   getBearerToken(): string {
     return this.token?.getBearerToken() ?? '';
   }

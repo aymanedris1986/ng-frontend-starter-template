@@ -37,7 +37,7 @@ export class TokenInterceptor implements HttpInterceptor {
       return next.handle(request);
     }
 
-    if(this.tokenService.getBearerToken() && !this.tokenService.refreshTokenExpired()){
+    if(this.tokenService.getBearerToken() && this.tokenService.tokenExpired() && !this.tokenService.refreshTokenExpired()){
       this.loginService.refreshToken(this.tokenService.getRefreshToken()!).subscribe(
         data=>{
           this.tokenService.set(data);
