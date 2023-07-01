@@ -5,6 +5,9 @@ import { TokenService } from './token.service';
 import { LoginService } from './login.service';
 import { filterObject, isEmptyObject } from './helpers';
 import { User } from './interface';
+import {StartupService} from '@core/bootstrap/startup.service';
+import {NgxPermissionsService, NgxRolesService} from 'ngx-permissions';
+import {Menu, MenuService} from '@core/bootstrap/menu.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +22,9 @@ export class AuthService {
     share()
   );
 
-  constructor(private loginService: LoginService, private tokenService: TokenService) {}
+  constructor(private loginService: LoginService, private tokenService: TokenService,
+              private permissonsService: NgxPermissionsService,
+              private rolesService: NgxRolesService,private menuService:MenuService) {}
 
   init() {
     return new Promise<void>(resolve => this.change$.subscribe(() => resolve()));
@@ -37,6 +42,10 @@ export class AuthService {
     this.tokenService.clear();
     return this.loginService.login(username, password, rememberMe).pipe(
       tap(token => this.tokenService.set(token)),
+      switchMap((token)=>this.assignUser()),
+      tap(user=>{this.setPermissions(user)}),
+      switchMap(() => this.menu()),
+      tap(menu => this.setMenu(menu)),
       map(() => this.check())
     );
   }
@@ -74,5 +83,20 @@ export class AuthService {
       return of(this.user$.getValue());
     }
     return this.loginService.me().pipe(tap(user => this.user$.next(user)));
+  }
+
+  private setPermissions(user: User) {
+    // In a real app, you should get permissions and roles from the user information.
+    const permissions = user.permissions as string[];
+    const roles = user.roles as string[];
+    const rolesAndPermissions = [...permissions, ...roles,user.mainRole];
+    this.permissonsService.flushPermissions();
+    this.rolesService.flushRoles();
+    this.rolesService.addRoleWithPermissions(user.mainRole!,rolesAndPermissions as string[]);
+  }
+
+  private setMenu(menu: Menu[]) {
+    this.menuService.addNamespace(menu, 'menu');
+    this.menuService.set(menu);
   }
 }
