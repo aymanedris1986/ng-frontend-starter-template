@@ -42,7 +42,7 @@ export class AuthService {
     this.tokenService.clear();
     return this.loginService.login(username, password, rememberMe).pipe(
       tap(token => this.tokenService.set(token)),
-      switchMap((token)=>this.assignUser()),
+      switchMap(()=>this.assignUser()),
       tap(user=>{this.setPermissions(user)}),
       switchMap(() => this.menu()),
       tap(menu => this.setMenu(menu)),
