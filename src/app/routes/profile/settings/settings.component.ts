@@ -1,33 +1,40 @@
-import { Component } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ControlsOf, IProfile } from '@shared';
+import {Component, OnInit} from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import {ApplicationCrudFormComponent} from '@core/component/application-crud-form-component';
+import {User} from '@core';
+import {SecUserProfileService} from '@shared/services/application/sec-user-profile.service';
+import {AppModel} from '@core/model/app-model';
+import {SecUserProfile} from '@shared/model/sec-user-profile';
+import {CrudService} from '@core/service/crud-service';
+import {AppCrudModel} from '@core/model/app-crud-model';
 
 @Component({
   selector: 'app-profile-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
 })
-export class ProfileSettingsComponent {
-  reactiveForm = this.fb.nonNullable.group({
-    username: ['', [Validators.required]],
-    email: ['', [Validators.required, Validators.email]],
-    gender: ['', [Validators.required]],
-    city: ['', [Validators.required]],
-    address: ['', [Validators.required]],
-    company: ['', [Validators.required]],
-    mobile: ['', [Validators.required]],
-    tele: ['', [Validators.required]],
-    website: ['', [Validators.required]],
-    date: ['', [Validators.required]],
-  });
+export class ProfileSettingsComponent extends ApplicationCrudFormComponent<string> implements OnInit{
+  user!: User;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private secUserProfileService:SecUserProfileService) { super();}
 
-  getErrorMessage(form: FormGroup<ControlsOf<IProfile>>) {
-    return form.get('email')?.hasError('required')
-      ? 'You must enter a value'
-      : form.get('email')?.hasError('email')
-      ? 'Not a valid email'
-      : '';
+  ngOnInit(): void {
+    this.auth.user().subscribe(user => {(this.user = user); this.id = user.id as string;});
+  }
+
+  createNewModelObject(): AppModel {
+    return new SecUserProfile();
+  }
+
+  getCrudService(): CrudService<AppCrudModel<string>, string> {
+    return this.secUserProfileService;
+  }
+
+  getFormGroup(): FormGroup {
+    return this.toFormGroup(SecUserProfile.fg);
+  }
+
+  getLovNames(): string[] {
+    return [];
   }
 }
