@@ -27,6 +27,7 @@ const routes: Routes = [
       { path: 'profile',loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule) },
       { path: 'demo', loadChildren: () => import('./demo/demo.module').then(m => m.DemoModule) },
       { path: 'trades', loadChildren: () => import('./trades/trades.module').then(m => m.TradesModule) },
+  { path: 'portfolio', loadChildren: () => import('./portfolio/portfolio.module').then(m => m.PortfolioModule) },
     ],
   },
   {

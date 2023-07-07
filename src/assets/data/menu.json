@@ -27,6 +27,24 @@
           "ADMIN"
         ]
       }
+    },
+    {
+      "route": "portfolio",
+      "name": "portfolio",
+      "type": "sub",
+      "icon": "laptop",
+      "children": [
+        {
+          "route": "portfolio-main",
+          "name": "portfolio-main",
+          "type": "link"
+        }
+      ],
+      "permissions": {
+        "only": [
+          "ADMIN"
+        ]
+      }
     }
   ]
 }

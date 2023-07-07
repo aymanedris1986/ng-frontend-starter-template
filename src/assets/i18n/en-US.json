@@ -2,7 +2,9 @@
   "menu": {
     "dashboard": "Dashboard",
     "trades": "Trades",
-    "trades.all-trades" : "All Trades"
+    "trades.all-trades" : "All Trades",
+    "portfolio": "Your Workstation",
+    "portfolio.portfolio-main" : "Main Portfolio"
   },
   "validations": {
     "required": "This field is required",
